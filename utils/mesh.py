@@ -107,3 +107,4 @@ def add_vertex_group(mesh_object: bpy.types.Object, name: str = "Group") -> bpy.
     vertex_group = mesh_object.vertex_groups.new(name=name)
 
     return vertex_group
+

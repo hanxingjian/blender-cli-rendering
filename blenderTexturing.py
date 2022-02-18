@@ -1,4 +1,4 @@
-# blender --background --python 07_texturing.py --render-frame 1 -- </path/to/output/image> <resolution_percentage> <num_samples>
+# blender --background --python blenderTexturing.py --render-frame 1 -- </path/to/output/image> <resolution_percentage> <num_samples>
 
 import bpy
 import sys
@@ -59,7 +59,7 @@ def add_named_material(name: str, scale=(1.0, 1.0, 1.0), displacement_scale: flo
     return mat
 
 
-def set_scene_objects():
+def set_scene_objects(textureID):
     add_named_material("Leather05")
     add_named_material("Metal07")
     add_named_material("Fabric02")
@@ -67,9 +67,9 @@ def set_scene_objects():
 
     left_object, center_object, right_object = utils.create_three_smooth_monkeys()
 
-    left_object.data.materials.append(bpy.data.materials["Leather05"])
-    center_object.data.materials.append(bpy.data.materials["Metal07"])
-    right_object.data.materials.append(bpy.data.materials["Fabric02"])
+    left_object.data.materials.append(bpy.data.materials[textureID])
+    center_object.data.materials.append(bpy.data.materials[textureID])
+    right_object.data.materials.append(bpy.data.materials[textureID])
 
     current_object = utils.create_plane(size=12.0, name="Floor")
     current_object.data.materials.append(bpy.data.materials["Marble01"])
@@ -100,6 +100,7 @@ def set_camera_params(camera, dof_target):
 output_file_path = str(sys.argv[sys.argv.index('--') + 1])
 resolution_percentage = int(sys.argv[sys.argv.index('--') + 2])
 num_samples = int(sys.argv[sys.argv.index('--') + 3])
+textureID = str(sys.argv[sys.argv.index('--') + 4])
 
 # Parameters
 hdri_path = "D:\\Research\\NFT\\blender-cli-rendering\\assets\\HDRIs\\green_point_park_2k.hdr"
@@ -112,7 +113,7 @@ world = scene.world
 utils.clean_objects()
 
 ## Suzannes
-focus_target = set_scene_objects()
+focus_target = set_scene_objects(textureID)
 
 ## Camera
 bpy.ops.object.camera_add(location=(0.0, -16.0, 2.0))
